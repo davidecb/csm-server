@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { PerformerRepository } from 'src/domain/performer/port/repository/performer-repository';
 import { PerformerInterface } from './../../interface/performer.interface';
 import { Performer } from 'src/domain/performer/model/performer';
+import { AddPlatformNameCommand } from 'src/application/performer/command/add-platform-name.command';
 
 @Injectable()
 export class PerformerRepositoryMongoDB implements PerformerRepository {
@@ -45,6 +46,29 @@ export class PerformerRepositoryMongoDB implements PerformerRepository {
     updates.forEach((update) => {
       updatedPerformer[update] = updatePerformerCommand[update];
     });
+    await updatedPerformer.save();
+    return new Performer(
+      updatedPerformer.name,
+      updatedPerformer.performerName,
+      updatedPerformer.platformNames,
+      updatedPerformer.location,
+      updatedPerformer.performerShift,
+      updatedPerformer.performerId,
+      updatedPerformer.accountId,
+      updatedPerformer.accountType,
+      updatedPerformer.bank,
+      updatedPerformer.email,
+      updatedPerformer.retention,
+      updatedPerformer.status,
+    );
+  }
+
+  async addPlatformName(
+    id: string,
+    addPlatformNameCommand: AddPlatformNameCommand,
+  ): Promise<Performer> {
+    const updatedPerformer = await this.performerModel.findById(id);
+    updatedPerformer.platformNames.push(addPlatformNameCommand.platformName);
     await updatedPerformer.save();
     return new Performer(
       updatedPerformer.name,

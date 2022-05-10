@@ -20,6 +20,8 @@ import { ListsUsersHandler } from 'src/application/user/query/lists-users.handle
 import { DeleteUserHandler } from 'src/application/user/command/delete-user.handler';
 import { UpdateUserHandler } from 'src/application/user/command/update-user.handler';
 import { UpdateUserCommand } from 'src/application/user/command/update-user.command';
+import { ValidateUserCommand } from 'src/application/user/command/validate-user.command';
+import { ValidateUserHandler } from 'src/application/user/command/validate-user.handler';
 
 @Controller('user')
 export class UserController {
@@ -29,6 +31,7 @@ export class UserController {
     private readonly _updateUserHandler: UpdateUserHandler,
     private readonly _deleteUserHandler: DeleteUserHandler,
     private readonly _listsUsersHandler: ListsUsersHandler,
+    private readonly _validateUserHandler: ValidateUserHandler,
   ) {}
 
   @Get('')
@@ -36,6 +39,17 @@ export class UserController {
   async getUsers(@Request() req, @Res() res) {
     const users = await this._listsUsersHandler.run(req.user.role);
     return res.status(HttpStatus.OK).json(users);
+  }
+
+  @Post('/me/validate')
+  @UseGuards(AuthGuard('jwt'))
+  async validateUser(
+    @Request() req,
+    @Res() res,
+    @Body() validateUserCommand: ValidateUserCommand,
+  ) {
+    await this._validateUserHandler.run(validateUserCommand, req.user);
+    return res.status(HttpStatus.ACCEPTED).json({});
   }
 
   @Post()
@@ -48,15 +62,13 @@ export class UserController {
 
   @Post('/login')
   async loginUser(@Res() res, @Body() loginUserCommand: LoginUserCommand) {
-    const token = await this._loginUserHandler.run(loginUserCommand);
-    if (!token) {
+    const loginStatus = await this._loginUserHandler.run(loginUserCommand);
+    if (loginStatus.error) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         msg: 'Username or password is wrong',
       });
     }
-    res.status(HttpStatus.OK).json({
-      token,
-    });
+    res.status(HttpStatus.OK).json(loginStatus);
   }
 
   @Post('/logout')

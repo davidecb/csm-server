@@ -5,15 +5,16 @@ import { PasswordWrongError } from 'src/domain/errors/password-wrong.error';
 export class LoginUserService {
   constructor(private readonly _userRepository: UserRepository) {}
 
-  async run(username: string, password: string): Promise<string> {
+  async run(username: string, password: string): Promise<any> {
     if (!(await this._userRepository.usernameExists(username))) {
       throw new UsernameWrongError(username);
     }
-    const userToken = await this._userRepository.login(username, password);
 
-    if (userToken && userToken !== '401') {
-      return userToken;
+    const loginStatus = await this._userRepository.login(username, password);
+    if (loginStatus.error) {
+      throw new PasswordWrongError();
     }
-    throw new PasswordWrongError();
+
+    return loginStatus;
   }
 }

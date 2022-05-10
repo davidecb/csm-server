@@ -31,18 +31,31 @@ export class UserRepositoryMongoDB implements UserRepository {
     return user;
   }
 
-  async login(username: string, password: string): Promise<string> {
+  async login(username: string, password: string): Promise<any> {
     const user = await this.userModel.findOne({ username });
     const isMatch = await user.comparePassword(password);
 
     if (isMatch) {
-      return sign(
+      const token = sign(
         { id: user.id, username: user.username, role: user.role },
         process.env.JWT_SECRET,
         { expiresIn: 90000 },
       );
+      return {
+        token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          username: user.username,
+          role: user.role,
+          location: user.location,
+          userShift: user.userShift,
+        },
+      };
     }
-    return '401';
+    return {
+      error: 'Unauthorized access',
+    };
   }
 
   async validateUser(payload: Payload): Promise<User> {

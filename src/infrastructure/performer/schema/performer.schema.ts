@@ -16,6 +16,8 @@ export const PerformerSchema = new Schema(
     platformNames: {
       type: Array,
       default: [],
+      lowercase: true,
+      trim: true,
     },
     location: {
       type: String,

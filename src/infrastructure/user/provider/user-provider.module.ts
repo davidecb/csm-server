@@ -20,6 +20,7 @@ import { DeleteUserHandler } from 'src/application/user/command/delete-user.hand
 import { UpdateUserService } from 'src/domain/user/service/update-user.service';
 import { updateUserServiceProvider } from './service/update-user-service.provider';
 import { UpdateUserHandler } from 'src/application/user/command/update-user.handler';
+import { ValidateUserHandler } from 'src/application/user/command/validate-user.handler';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
@@ -53,6 +54,7 @@ import { UpdateUserHandler } from 'src/application/user/command/update-user.hand
     userRepositoryProvider,
     userDaoProvider,
     CreateUserHandler,
+    ValidateUserHandler,
     UpdateUserHandler,
     DeleteUserHandler,
     LoginUserHandler,
@@ -69,6 +71,7 @@ import { UpdateUserHandler } from 'src/application/user/command/update-user.hand
     LoginUserHandler,
     ListsUsersHandler,
     ValidateUserService,
+    ValidateUserHandler,
     UserRepository,
   ],
 })

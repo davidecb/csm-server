@@ -9,7 +9,7 @@ export class ListsPerformersHandler {
 
   async run(user: User): Promise<PerformerDto[]> {
     const { location, userShift } = user;
-    const searchOptions = {};
+    const searchOptions = { status: true };
     if (location !== '*') {
       searchOptions['location'] = location;
       searchOptions['performerShift'] = userShift;

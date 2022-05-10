@@ -20,15 +20,10 @@ export class BusinessExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    console.log('@error filter:', error.name);
-    const errorCode = BusinessErrors[error.name];
-    console.log('@errorCode:', errorCode);
 
     const statusCode =
       HttpStatus[BusinessErrors[error.name]] ||
       HttpStatus[BusinessErrors.DEFAULT];
-
-    console.log('@statusCode:', statusCode);
     const message: Message = {
       statusCode: statusCode as number,
       timestamp: new Date().toISOString(),

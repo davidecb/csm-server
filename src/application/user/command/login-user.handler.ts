@@ -6,7 +6,7 @@ import { LoginUserService } from 'src/domain/user/service/login-user.service';
 export class LoginUserHandler {
   constructor(private _loginUserService: LoginUserService) {}
 
-  async run(loginUserCommand: LoginUserCommand): Promise<string> {
+  async run(loginUserCommand: LoginUserCommand): Promise<any> {
     return await this._loginUserService.run(
       loginUserCommand.username,
       loginUserCommand.password,
