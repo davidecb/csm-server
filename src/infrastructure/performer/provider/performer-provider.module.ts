@@ -37,6 +37,7 @@ import { StreamateSchema } from 'src/infrastructure/streamate/schema/streamate.s
 import { AddPlatformNameService } from 'src/domain/performer/service/add-platform-name.service';
 import { addPlatformNameServiceProvider } from './service/add-platform-name-service.provider';
 import { AddPlatformNameHandler } from 'src/application/performer/command/add-platform-name.handler';
+import { NoteSchema } from 'src/infrastructure/note/schema/note.schema';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AddPlatformNameHandler } from 'src/application/performer/command/add-pl
       { name: 'ImLive', schema: ImLiveSchema },
       { name: 'Livejasmin', schema: LivejasminSchema },
       { name: 'Streamate', schema: StreamateSchema },
+      { name: 'Note', schema: NoteSchema },
     ]),
     UserModule,
   ],

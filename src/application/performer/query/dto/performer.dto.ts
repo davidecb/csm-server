@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PerformerDto {
+  public _id: string;
+
   @ApiProperty({ example: 'Nombre real' })
   public name: string;
 
@@ -36,4 +38,7 @@ export class PerformerDto {
 
   @ApiProperty({ example: true })
   public status: boolean;
+
+  @ApiProperty()
+  public notes: any[];
 }

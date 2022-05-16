@@ -13,10 +13,18 @@ export class PerformerDaoMongodb implements PerformerDao {
   ) {}
 
   async lists(searchOptions: object): Promise<PerformerDto[]> {
-    return await this.performerModel.find(searchOptions, {
-      createdAt: 0,
-      updatedAt: 0,
-      __v: 0,
-    });
+    return await this.performerModel
+      .find(searchOptions, {
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+      })
+      .populate('notes', {
+        noteId: 0,
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+      })
+      .exec();
   }
 }

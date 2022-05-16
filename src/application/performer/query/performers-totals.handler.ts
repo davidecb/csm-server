@@ -27,6 +27,8 @@ export class PerformersTotalsHandler {
       performerName,
       location: 'desconocida',
       performerShift: 'desconocido',
+      notes: [],
+      id: '',
     };
     const searchResult = performers.find((performer) =>
       performer.platformNames.includes(performerName),
@@ -37,6 +39,8 @@ export class PerformersTotalsHandler {
           performerName: searchResult.performerName,
           location: searchResult.location.replace('é', 'e'),
           performerShift: searchResult.performerShift.replace('é', 'e'),
+          notes: searchResult.notes,
+          id: searchResult._id,
         }
       : notFounded;
     return performerInfo;
@@ -100,6 +104,7 @@ export class PerformersTotalsHandler {
         platforms: {},
         locations: {},
       },
+      notes: [],
     };
     const totals: PerformersTotalsDto[] = [];
     const performers = await this._performerDao.lists(searchOptions);
@@ -121,6 +126,7 @@ export class PerformersTotalsHandler {
           performerName: performerInfo.performerName,
           location: performerInfo.location,
           performerShift: performerInfo.performerShift,
+          id: performerInfo.id,
         };
         // inicializo totales modelo
         const time = {
@@ -131,11 +137,13 @@ export class PerformersTotalsHandler {
           total: earnTot,
           [data.platform]: earnTot,
         };
+        const notes = [...performerInfo.notes];
 
         totals.push({
           personalInfo,
           time,
           earnings,
+          notes,
         });
       } else if (performerIndex >= 0 && !monitorFilter) {
         // actualizo totales modelo
@@ -194,6 +202,7 @@ export class PerformersTotalsHandler {
               performerName: performer.performerName,
               location: performer.location,
               performerShift: performer.performerShift,
+              id: performer._id,
             };
             const time = {
               total: 0,
@@ -201,10 +210,12 @@ export class PerformersTotalsHandler {
             const earnings = {
               total: 0,
             };
+            const notes = performer.notes;
             totals.push({
               personalInfo,
               time,
               earnings,
+              notes,
             });
           }
         });

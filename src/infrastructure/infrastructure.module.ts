@@ -11,6 +11,7 @@ import { PerformerModule } from './performer/performer.module';
 import { ImLiveModule } from './imLive/imLive.module';
 import { CamsodaModule } from './camsoda/camsoda.module';
 import { LivejasminModule } from './livejasmin/livejasmin.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   providers: [AppLogger],
@@ -29,12 +30,13 @@ import { LivejasminModule } from './livejasmin/livejasmin.module';
           .required(),
       }),
     }),
-    UserModule,
+    CamsodaModule,
+    ImLiveModule,
+    LivejasminModule,
+    NoteModule,
     PerformerModule,
     StreamateModule,
-    ImLiveModule,
-    CamsodaModule,
-    LivejasminModule,
+    UserModule,
   ],
 })
 export class InfrastructureModule {}

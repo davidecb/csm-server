@@ -1,3 +1,5 @@
+import { Note } from 'src/domain/note/model/note';
+
 interface PersonalInfo {
   performerName: string;
   location: string;
@@ -16,4 +18,5 @@ export class PerformersTotalsDto {
   public personalInfo: PersonalInfo;
   public time: Totals;
   public earnings: Totals;
+  public notes: Note[];
 }

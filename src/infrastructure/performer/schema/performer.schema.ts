@@ -65,3 +65,9 @@ export const PerformerSchema = new Schema(
     timestamps: true,
   },
 );
+
+PerformerSchema.virtual('notes', {
+  ref: 'Note',
+  localField: '_id',
+  foreignField: 'performer',
+});
